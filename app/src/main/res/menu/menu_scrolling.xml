@@ -6,5 +6,6 @@
         android:id="@+id/action_linkedin"
         android:orderInCategory="100"
         android:title="Open Linkedin"
-        app:showAsAction="never" />
+        android:icon="@drawable/ic_linkedin"
+        app:showAsAction="always" />
 </menu>
