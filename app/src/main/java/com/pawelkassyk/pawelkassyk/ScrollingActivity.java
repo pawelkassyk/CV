@@ -18,7 +18,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 public class ScrollingActivity extends AppCompatActivity {
-    // todo: add linkedin button https://www.linkedin.com/in/pawe%C5%82-kassyk-859a2653/
     // todo: add styling + refactor styles
     // todo: remove unsued menu
     // todo: add projects
@@ -29,6 +28,7 @@ public class ScrollingActivity extends AppCompatActivity {
     // todo: add splash screen
     // todo: add app icon
     // todo: release
+    //todo: refactor java
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,7 +61,6 @@ public class ScrollingActivity extends AppCompatActivity {
             }
         });
     }
-
 
     private void sendMail() {
         Intent emailIntent = new Intent(Intent.ACTION_SENDTO);
@@ -107,7 +106,9 @@ public class ScrollingActivity extends AppCompatActivity {
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        if (id == R.id.action_linkedin) {
+            Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.linkedin.com/in/pawe%C5%82-kassyk-859a2653/"));
+            startActivity(browserIntent);
             return true;
         }
         return super.onOptionsItemSelected(item);
