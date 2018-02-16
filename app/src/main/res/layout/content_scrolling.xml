@@ -36,22 +36,22 @@
                     android:orientation="vertical">
 
                     <TextView
+                        android:id="@+id/mail"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_margin="@dimen/text_margin"
-                        android:text="Dane Kontaktowe" />
+                        android:text="pkassyk@gmail.com" />
 
                     <TextView
-                        android:layout_width="wrap_content"
+                        android:id="@+id/phone"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_margin="@dimen/text_margin"
-                        android:text="E-mail: pkassyk@gmail.com" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="@dimen/text_margin"
-                        android:text="Telefon: 727 926 473" />
+                        android:padding="@dimen/text_margin"
+                        android:foreground="?attr/selectableItemBackground"
+                        android:clickable="true"
+                        android:textColor="@color/colorPrimary"
+                        android:focusable="true"
+                        android:text="727 926 473" />
 
                     <TextView
                         android:layout_width="wrap_content"
