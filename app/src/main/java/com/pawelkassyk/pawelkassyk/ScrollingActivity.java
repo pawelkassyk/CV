@@ -42,9 +42,22 @@ public class ScrollingActivity extends AppCompatActivity {
                 call();
             }
         });
+        TextView mailButton = findViewById(R.id.mail);
+        mailButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                sendMail();
+            }
+        });
     }
 
-    public void call() {
+    private void sendMail() {
+        Intent emailIntent = new Intent(Intent.ACTION_SENDTO);
+        emailIntent.setData(Uri.parse("mailto:pkassyk@gmail.com"));
+        startActivity(emailIntent);
+    }
+
+    private void call() {
         Intent intent = new Intent(Intent.ACTION_DIAL);
         intent.setData(Uri.parse("tel:727926473"));
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
