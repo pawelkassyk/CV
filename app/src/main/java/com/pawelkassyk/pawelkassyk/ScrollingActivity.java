@@ -18,6 +18,17 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 public class ScrollingActivity extends AppCompatActivity {
+    // todo: add linkedin button https://www.linkedin.com/in/pawe%C5%82-kassyk-859a2653/
+    // todo: add styling + refactor styles
+    // todo: remove unsued menu
+    // todo: add projects
+    // todo: add website
+    // todo: add play store dev account link
+    // todo: add api call
+    // todo: write espresso test via DSL designed for CV app
+    // todo: add splash screen
+    // todo: add app icon
+    // todo: release
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,6 +61,7 @@ public class ScrollingActivity extends AppCompatActivity {
             }
         });
     }
+
 
     private void sendMail() {
         Intent emailIntent = new Intent(Intent.ACTION_SENDTO);
