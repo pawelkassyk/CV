@@ -1,7 +1,6 @@
 package com.pawelkassyk.pawelkassyk;
 
 import android.Manifest;
-import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
@@ -17,7 +16,6 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -31,23 +29,22 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class ScrollingActivity extends AppCompatActivity implements Callback<List<ProjectDto>> {
-    // todo: handle failed respose (with retry)
-    // todo: style list view + add play store links
-    // todo: remove unsued menu
-    // todo: add projects
-    // todo: add website
-    // todo: add play store dev account link
-    // todo: add api call
-    // todo: write espresso test via DSL designed for CV app
-    // todo: add splash screen
-    // todo: add app icon
-    // todo: release
-    // todo: refactor java
+
+    static final String BASE_URL = "https://raw.githubusercontent.com/pawelkassyk/";
+
+    private RemoteApi remoteApi;
+    private ProgressBar progressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_scrolling);
+        initViews();
+        initiateRemoteApi();
+        callRemoteApi();
+    }
+
+    private void initViews() {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -64,7 +61,7 @@ public class ScrollingActivity extends AppCompatActivity implements Callback<Lis
         phoneButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                call();
+                dialPhone();
             }
         });
 
@@ -76,7 +73,7 @@ public class ScrollingActivity extends AppCompatActivity implements Callback<Lis
             }
         });
 
-        callRemoteApi();
+        progressBar = findViewById(R.id.loadingBar);
     }
 
     private void sendMail() {
@@ -85,19 +82,23 @@ public class ScrollingActivity extends AppCompatActivity implements Callback<Lis
         startActivity(emailIntent);
     }
 
-    private void call() {
+    private void dialPhone() {
         Intent intent = new Intent(Intent.ACTION_DIAL);
         intent.setData(Uri.parse("tel:727926473"));
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this,
-                    new String[]{Manifest.permission.CALL_PHONE}, 1);
+        if (isDialPermissionRequired()) {
+            requestDialPermission();
             return;
         }
-        try {
-            startActivity(intent);
-        } catch (ActivityNotFoundException e) {
-            Toast.makeText(getApplicationContext(), "Żadna aplikacja nie może obsłużyć wykonania połączenia", Toast.LENGTH_LONG).show();
-        }
+        startActivity(intent);
+    }
+
+    private void requestDialPermission() {
+        ActivityCompat.requestPermissions(this,
+                new String[]{Manifest.permission.CALL_PHONE}, 1);
+    }
+
+    private boolean isDialPermissionRequired() {
+        return ActivityCompat.checkSelfPermission(this, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED;
     }
 
     @Override
@@ -110,17 +111,23 @@ public class ScrollingActivity extends AppCompatActivity implements Callback<Lis
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         if (id == R.id.action_linkedin) {
-            Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.linkedin.com/in/pawe%C5%82-kassyk-859a2653/"));
-            startActivity(browserIntent);
+            openLinkedIn();
             return true;
         }
         return super.onOptionsItemSelected(item);
     }
 
-
-    static final String BASE_URL = "https://raw.githubusercontent.com/pawelkassyk/";
+    private void openLinkedIn() {
+        Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.linkedin.com/in/pawe%C5%82-kassyk-859a2653/"));
+        startActivity(browserIntent);
+    }
 
     public void callRemoteApi() {
+        Call<List<ProjectDto>> call = remoteApi.getProjects();
+        call.enqueue(this);
+    }
+
+    private void initiateRemoteApi() {
         Gson gson = new GsonBuilder()
                 .setLenient()
                 .create();
@@ -130,22 +137,17 @@ public class ScrollingActivity extends AppCompatActivity implements Callback<Lis
                 .addConverterFactory(GsonConverterFactory.create(gson))
                 .build();
 
-        RemoteApi remoteApi = retrofit.create(RemoteApi.class);
-
-        Call<List<ProjectDto>> call = remoteApi.getProjects();
-        call.enqueue(this);
+        remoteApi = retrofit.create(RemoteApi.class);
     }
 
-    public void onSuccess(List<ProjectDto> projectsList) {
-        ProgressBar progressBar = findViewById(R.id.loadingBar);
+    public void displayProjects(List<ProjectDto> projectsList) {
         progressBar.setVisibility(View.GONE);
-        MyAdapter adapter = new MyAdapter(projectsList, this);
+        ProjectsListAdapter adapter = new ProjectsListAdapter(projectsList, this);
         ListView projectsListView = findViewById(R.id.projectsList);
         projectsListView.setAdapter(adapter);
     }
 
-    public void displayFailed() {
-        final ProgressBar progressBar = findViewById(R.id.loadingBar);
+    public void displayProjectsError() {
         progressBar.setVisibility(View.GONE);
         final Button retryButton = findViewById(R.id.retryButton);
         retryButton.setVisibility(View.VISIBLE);
@@ -156,21 +158,21 @@ public class ScrollingActivity extends AppCompatActivity implements Callback<Lis
                 retryButton.setVisibility(View.GONE);
                 callRemoteApi();
             }
-        }) ;
+        });
     }
 
     @Override
     public void onResponse(Call<List<ProjectDto>> call, Response<List<ProjectDto>> response) {
         if (response.isSuccessful()) {
             List<ProjectDto> projects = response.body();
-            onSuccess(projects);
+            displayProjects(projects);
         } else {
-            displayFailed();
+            displayProjectsError();
         }
     }
 
     @Override
     public void onFailure(Call<List<ProjectDto>> call, Throwable t) {
-        displayFailed();
+        displayProjectsError();
     }
 }

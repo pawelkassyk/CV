@@ -11,10 +11,24 @@
 
         <TextView
             android:id="@+id/projectName"
+            android:textStyle="bold"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="0"
             android:padding="@dimen/text_margin" />
+
+        <TextView
+            android:id="@+id/playstoreUrl"
+            android:gravity="end"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:clickable="true"
+            android:focusable="true"
+            android:foreground="?attr/selectableItemBackground"
+            android:padding="@dimen/text_margin"
+            android:text="Play Store"
+            android:textColor="@color/colorPrimary" />
 
         <TextView
             android:id="@+id/githubUrl"

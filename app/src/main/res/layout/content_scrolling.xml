@@ -101,7 +101,7 @@
                     android:visibility="gone"/>
 
 
-                <com.pawelkassyk.pawelkassyk.MyListView
+                <com.pawelkassyk.pawelkassyk.SideAdjustingListView
                     android:id="@+id/projectsList"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" />
