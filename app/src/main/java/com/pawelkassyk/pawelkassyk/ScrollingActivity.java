@@ -28,7 +28,7 @@ public class ScrollingActivity extends AppCompatActivity {
     // todo: add splash screen
     // todo: add app icon
     // todo: release
-    //todo: refactor java
+    // todo: refactor java
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,6 +53,7 @@ public class ScrollingActivity extends AppCompatActivity {
                 call();
             }
         });
+
         TextView mailButton = findViewById(R.id.mail);
         mailButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -105,6 +106,7 @@ public class ScrollingActivity extends AppCompatActivity {
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
+        //noinspection SimplifiableIfStatement
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_linkedin) {
             Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.linkedin.com/in/pawe%C5%82-kassyk-859a2653/"));

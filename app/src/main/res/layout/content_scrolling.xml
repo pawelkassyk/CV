@@ -44,7 +44,7 @@
                         android:clickable="true"
                         android:textColor="@color/colorPrimary"
                         android:focusable="true"
-                        android:text="pkassyk@gmail.com" />
+                        android:text="pkassyk@gmail" />
 
                     <TextView
                         android:id="@+id/phone"
