@@ -13,6 +13,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -30,7 +31,8 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class ScrollingActivity extends AppCompatActivity implements Callback<List<ProjectDto>> {
-    // todo: add styling + refactor styles
+    // todo: handle failed respose (with retry)
+    // todo: style list view + add play store links
     // todo: remove unsued menu
     // todo: add projects
     // todo: add website
@@ -41,7 +43,6 @@ public class ScrollingActivity extends AppCompatActivity implements Callback<Lis
     // todo: add app icon
     // todo: release
     // todo: refactor java
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -90,14 +91,6 @@ public class ScrollingActivity extends AppCompatActivity implements Callback<Lis
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this,
                     new String[]{Manifest.permission.CALL_PHONE}, 1);
-
-            // TODO: Consider calling
-            //    ActivityCompat#requestPermissions
-            // here to request the missing permissions, and then overriding
-            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-            //                                          int[] grantResults)
-            // to handle the case where the user grants the permission. See the documentation
-            // for ActivityCompat#requestPermissions for more details.
             return;
         }
         try {
@@ -109,20 +102,13 @@ public class ScrollingActivity extends AppCompatActivity implements Callback<Lis
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_scrolling, menu);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        //noinspection SimplifiableIfStatement
         if (id == R.id.action_linkedin) {
             Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.linkedin.com/in/pawe%C5%82-kassyk-859a2653/"));
             startActivity(browserIntent);
@@ -158,18 +144,33 @@ public class ScrollingActivity extends AppCompatActivity implements Callback<Lis
         projectsListView.setAdapter(adapter);
     }
 
+    public void displayFailed() {
+        final ProgressBar progressBar = findViewById(R.id.loadingBar);
+        progressBar.setVisibility(View.GONE);
+        final Button retryButton = findViewById(R.id.retryButton);
+        retryButton.setVisibility(View.VISIBLE);
+        retryButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                progressBar.setVisibility(View.VISIBLE);
+                retryButton.setVisibility(View.GONE);
+                callRemoteApi();
+            }
+        }) ;
+    }
+
     @Override
     public void onResponse(Call<List<ProjectDto>> call, Response<List<ProjectDto>> response) {
         if (response.isSuccessful()) {
             List<ProjectDto> projects = response.body();
             onSuccess(projects);
         } else {
-            Toast.makeText(this, "Porabło się źle", Toast.LENGTH_SHORT).show();
+            displayFailed();
         }
     }
 
     @Override
     public void onFailure(Call<List<ProjectDto>> call, Throwable t) {
-        Toast.makeText(this, "Nie udało się pobrać", Toast.LENGTH_SHORT).show();
+        displayFailed();
     }
 }
