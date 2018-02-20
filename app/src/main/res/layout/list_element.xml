@@ -4,22 +4,37 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <TextView
-        android:layout_margin="@dimen/text_margin"
-        android:id="@+id/projectName"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/projectName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="0"
+            android:padding="@dimen/text_margin" />
+
+        <TextView
+            android:id="@+id/githubUrl"
+            android:gravity="end"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:clickable="true"
+            android:focusable="true"
+            android:foreground="?attr/selectableItemBackground"
+            android:padding="@dimen/text_margin"
+            android:text="Github"
+            android:textColor="@color/colorPrimary" />
+
+    </LinearLayout>
 
     <TextView
-        android:layout_margin="@dimen/text_margin"
-        android:id="@+id/githubUrl"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
-
-    <TextView
-        android:layout_margin="@dimen/text_margin"
         android:id="@+id/projectDescription"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:padding="@dimen/text_margin" />
 
 </LinearLayout>

@@ -1,6 +1,8 @@
 package com.pawelkassyk.pawelkassyk;
 
 import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -40,7 +42,7 @@ public class MyAdapter extends BaseAdapter {
             view = inflater.inflate(R.layout.list_element, container, false);
         }
 
-        ProjectDto project = projectsList.get(position);
+        final ProjectDto project = projectsList.get(position);
 
         TextView name = view.findViewById(R.id.projectName);
         name.setText(project.getName());
@@ -49,7 +51,13 @@ public class MyAdapter extends BaseAdapter {
         description.setText(project.getDescription());
 
         TextView githubUrl = view.findViewById(R.id.githubUrl);
-        githubUrl.setText(project.getGithubUrl());
+        githubUrl.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(project.getGithubUrl()));
+                context.startActivity(browserIntent);
+            }
+        });
 
         return view;
     }

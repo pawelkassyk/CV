@@ -42,9 +42,9 @@
                         android:clickable="true"
                         android:focusable="true"
                         android:foreground="?attr/selectableItemBackground"
+                        android:textColor="@color/colorPrimary"
                         android:padding="@dimen/text_margin"
-                        android:text="pkassyk@gmail"
-                        android:textColor="@color/colorPrimary" />
+                        android:text="pkassyk@gmail"/>
 
                     <TextView
                         android:id="@+id/phone"
