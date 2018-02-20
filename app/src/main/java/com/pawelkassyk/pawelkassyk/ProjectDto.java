@@ -25,4 +25,20 @@ public class ProjectDto {
     public void setGithubUrl(String githubUrl) {
         this.githubUrl = githubUrl;
     }
+
+    public String getPlayStoreUrl() {
+        return playStoreUrl;
+    }
+
+    public void setPlayStoreUrl(String playStoreUrl) {
+        this.playStoreUrl = playStoreUrl;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
 }

@@ -92,8 +92,8 @@
                     android:layout_height="50dp"
                     android:indeterminate="true"/>
 
-                <TextView
-                    android:id="@+id/projectsContent"
+                <com.pawelkassyk.pawelkassyk.MyListView
+                    android:id="@+id/projectsList"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" />
 

@@ -13,6 +13,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -152,16 +153,9 @@ public class ScrollingActivity extends AppCompatActivity implements Callback<Lis
     public void onSuccess(List<ProjectDto> projectsList) {
         ProgressBar progressBar = findViewById(R.id.loadingBar);
         progressBar.setVisibility(View.GONE);
-        TextView projectsContent = findViewById(R.id.projectsContent);
-
-        String projectsToDisplay = "";
-
-        for(ProjectDto project : projectsList){
-            projectsToDisplay = projectsToDisplay
-                    + project.getName() + " " + project.getGithubUrl() + "\n";
-        }
-
-        projectsContent.setText(projectsToDisplay);
+        MyAdapter adapter = new MyAdapter(projectsList, this);
+        ListView projectsListView = findViewById(R.id.projectsList);
+        projectsListView.setAdapter(adapter);
     }
 
     @Override
