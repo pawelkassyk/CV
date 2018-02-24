@@ -61,7 +61,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_margin="@dimen/text_margin"
-                        android:text="Adres zamieszkania: Coopera 9b/1, 01-315 Warszawa" />
+                        android:text="Adress:Coopera 9b/1, 01-315 Warszawa" />
                 </LinearLayout>
 
             </LinearLayout>
